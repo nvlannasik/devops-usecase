@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-services
+  namespace: be-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-services
+  template:
+    metadata:
+      name: user-services
+      labels:
+        app: user-services
+    spec:
+      initContainers:
+        - name: set-env-from-secret
+          image: busybox
+          command:
+            - "sh"
+            - "-c"
+            - >
+              cp /scripts/add-env-from-secret.sh /tmp/add-env-from-secret.sh &&
+              chmod +x /tmp/add-env-from-secret.sh &&
+              /tmp/add-env-from-secret.sh
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: user-services-secret
+                  key: SECRET_KEY
+            - name: DB_MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: user-services-secret
+                  key: DB_MONGO_USER
+            - name: DB_MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: user-services-secret
+                  key: DB_MONGO_PASS
+          volumeMounts:
+            - name: script
+              mountPath: /scripts
+              readOnly: true
+            - name: app-dir
+              mountPath: /app
+              readOnly: false
+
+      containers:
+        - name: user-services-container
+          image: nvlannasik/user-services-go:latest
+          ports:
+            - name: user-services
+              containerPort: 8080
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 200m
+            requests:
+              memory: 128Mi
+              cpu: 100m
+
+          volumeMounts:
+            - name: app-dir
+              mountPath: /app
+              readOnly: true
+
+      volumes:
+        - name: app-dir
+          emptyDir: {}
+        - name: script
+          configMap:
+            name: script-add-env-from-secret

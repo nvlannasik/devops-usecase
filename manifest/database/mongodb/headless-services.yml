@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: database
+  name: mongodb-order-service-svc
+  labels:
+    name: mongodb-order-service-svc
+    app: database
+    role: mongodb-order-service
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  clusterIP: None
+  selector:
+    role: mongodb-order-service

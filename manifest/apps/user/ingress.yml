@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: be-user
+  name: user-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
+    ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.annasik.my.id
+      secretName: user-tls
+  rules:
+    - host: api.annasik.my.id
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: user-services-svc
+                port:
+                  number: 8080
