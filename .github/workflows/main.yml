@@ -6,43 +6,74 @@ on:
       - "release-*"
 
 jobs:
-  build-and-update-manifest:
+  build-push-and-update-manifest:
     runs-on: ubuntu-latest
     steps:
+      # Checkout Code
       - name: Checkout code
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
+      # Login to DockerHub
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Set up Git
-        run: |
-          git config --global user.email "bot-ci"
-          git config --global user.name "bot-ci"
-
-      - name: Build & Push Services and Update Manifest
-        run: |
-          SERVICES=("order" "product" "user")
-          APP_PATHS=("./App/order-nodejs" "./App/product-nodejs" "./App/user-go")
-          DOCKERFILES=("Dockerfile" "Dockerfile" "Dockerfile")
-          MANIFESTS=("./manifest/apps/order/deployment.yml" "./manifest/apps/product/deployment.yml" "./manifest/apps/user/deployment.yml")
-
-          for i in ${!SERVICES[*]}; do
-            # Build and Push
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${SERVICES[i]}-services:${{ github.ref_name }} -f ${APP_PATHS[i]}/${DOCKERFILES[i]} ${APP_PATHS[i]}
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/${SERVICES[i]}-services:${{ github.ref_name }}
-            
-            # Update manifest
-            NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/${SERVICES[i]}-services:${{ github.ref_name }}"
-            sed -i "s|image: .*|image: $NEW_IMAGE|" ${MANIFESTS[i]}
-            git add ${MANIFESTS[i]}
-          done
-
-      - name: Commit and Push
-        uses: devops-infra/action-commit-push@master
+      # Layanan Order
+      - name: Build & Push Order Service
+        uses: docker/build-push-action@v2
         with:
-          github_token: ${{ secrets.GH_PAT }}
-          commit_message: "Update manifest"
+          context: ./App/order-nodejs
+          file: ./App/order-nodejs/Dockerfile
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
+          push: true
+
+      - name: Update Order Services Deployment manifest
+        run: |
+          NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}"
+          sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/order/deployment.yml
+          git config --global user.email "annasikn@yahoo.com"
+          git config --global user.name "nvlannasik"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@${{ github.repository }}
+          git add ./manifest/apps/order/deployment.yml
+          git commit -m "Update Order Services Deployment manifest"
+          git push origin HEAD:master
+
+      # Layanan Product
+      - name: Build & Push Product Service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./App/product-nodejs
+          file: ./App/product-nodejs/Dockerfile
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}
+          push: true
+
+      - name: Update Product Services Deployment manifest
+        run: |
+          NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}"
+          sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/product/deployment.yml
+          git config --global user.email "annasikn@yahoo.com"
+          git config --global user.name "nvlannasik"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@${{ github.repository }}
+          git add ./manifest/apps/product/deployment.yml
+          git commit -m "Update Product Services Deployment manifest"
+          git push origin HEAD:master
+
+      # Layanan User
+      - name: Build & Push User Service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./App/user-go
+          file: ./App/user-go/Dockerfile
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}
+          push: true
+
+      - name: Update User Services Deployment manifest
+        run: |
+          NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}"
+          sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/user/deployment.yml
+          git config --global user.email "annasikn@yahoo.com"
+          git config --global user.name "nvlannasik"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@${{ github.repository }}
+          git add ./manifest/apps/user/deployment.yml
+          git commit -m "Update User Services Deployment manifest"
+          git push origin HEAD:master
