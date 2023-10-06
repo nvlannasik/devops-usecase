@@ -44,5 +44,5 @@ spec:
             - name: DB_MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: product-services-secret
+                  name: order-services-secret
                   key: DB_MONGO_PASSWORD
