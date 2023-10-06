@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: set-env-from-secret
-          image: nvlannasik/user-services-go:release-0.2.2
+          image: nvlannasik/user-services-go:release-0.2.3
           command:
             - "sh"
             - "-c"
@@ -50,7 +50,7 @@ spec:
 
       containers:
         - name: user-services-container
-          image: nvlannasik/user-services-go:release-0.2.2
+          image: nvlannasik/user-services-go:release-0.2.3
           ports:
             - name: user-services
               containerPort: 8080
