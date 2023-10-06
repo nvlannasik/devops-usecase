@@ -33,7 +33,7 @@ jobs:
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/order/deployment.yml
           git config --global user.email "annasikn@yahoo.com"
           git config --global user.name "nvlannasik"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/nvlannasik/devops-usecase.git
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/nvlannasik/devops-usecase.git
           git add ./manifest/apps/order/deployment.yml
           git commit -m "Update Order Services Deployment manifest"
           git push origin HEAD:master
@@ -53,7 +53,7 @@ jobs:
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/product/deployment.yml
           git config --global user.email "annasikn@yahoo.com"
           git config --global user.name "nvlannasik"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/nvlannasik/devops-usecase.git
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/nvlannasik/devops-usecase.git
           git add ./manifest/apps/product/deployment.yml
           git commit -m "Update Product Services Deployment manifest"
           git push origin HEAD:master
@@ -73,7 +73,7 @@ jobs:
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/user/deployment.yml
           git config --global user.email "annasikn@yahoo.com"
           git config --global user.name "nvlannasik"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/nvlannasik/devops-usecase.git
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/nvlannasik/devops-usecase.git
           git add ./manifest/apps/user/deployment.yml
           git commit -m "Update User Services Deployment manifest"
           git push origin HEAD:master
