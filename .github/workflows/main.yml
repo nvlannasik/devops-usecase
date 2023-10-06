@@ -30,6 +30,7 @@ jobs:
           file: ./App/order-nodejs/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
           push: true
+          platforms: linux/amd64,linux/arm64
 
       - name: Update Order Services Deployment manifest
         run: |
@@ -50,6 +51,7 @@ jobs:
           file: ./App/product-nodejs/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}
           push: true
+          platforms: linux/amd64,linux/arm64
 
       - name: Update Product Services Deployment manifest
         run: |
@@ -70,6 +72,7 @@ jobs:
           file: ./App/user-go/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}
           push: true
+          platforms: linux/amd64,linux/arm64
 
       - name: Update User Services Deployment manifest
         run: |
