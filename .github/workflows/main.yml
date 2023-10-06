@@ -81,3 +81,23 @@ jobs:
           git add ./manifest/apps/user/deployment.yml
           git commit -m "Update User Services Deployment manifest"
           git push origin HEAD:master
+
+  sync-argocd:
+    needs: build-push-and-update-manifest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x /usr/local/bin/argocd
+
+      - name: Sync All ArgoCD Apps
+        run: |
+          argocd login ${{ secrets.ARGOCD_SERVER }} --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }} --insecure
+          APPS=$(argocd app list -o name)
+          for APP in $APPS; do
+            argocd app sync $APP
+          done
