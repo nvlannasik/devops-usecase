@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-services
+  namespace: be-order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-services
+  template:
+    metadata:
+      name: order-services
+      labels:
+        app: order-services
+    spec:
+      containers:
+        - name: order-services
+          image: nvlannasik/order-services-nodejs:latest
+          ports:
+            - name: order-svc
+              containerPort: 3000
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 200m
+            requests:
+              memory: 128Mi
+              cpu: 100m
+          envFrom:
+            - configMapRef:
+                name: order-configmap
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: order-services-secret
+                  key: SECRET_KEY
+            - name: DB_MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: order-services-secret
+                  key: DB_MONGO_USER
+            - name: DB_MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: product-services-secret
+                  key: DB_MONGO_PASSWORD
