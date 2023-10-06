@@ -32,7 +32,7 @@ jobs:
       - name: Update Order Service Deployment Manifest Locally
         run: |
           NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}"
-          sed -i "s|image: .*|image: $NEW_IMAGE|" ./Manifest/apps/order/deployment.yml
+          sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/order/deployment.yml
 
       # Layanan Product
       - name: Build and Push Product Service
@@ -47,7 +47,7 @@ jobs:
       - name: Update Product Service Deployment Manifest Locally
         run: |
           NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}"
-          sed -i "s|image: .*|image: $NEW_IMAGE|" ./Manifest/apps/product/deployment.yml
+          sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/product/deployment.yml
 
       # Layanan User
       - name: Build and Push User Service
@@ -62,7 +62,7 @@ jobs:
       - name: Update User Service Deployment Manifest Locally
         run: |
           NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}"
-          sed -i "s|image: .*|image: $NEW_IMAGE|" ./Manifest/apps/user/deployment.yml
+          sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/user/deployment.yml
 
       # # Trigger ArgoCD untuk setiap layanan
       # - name: Trigger ArgoCD Sync
