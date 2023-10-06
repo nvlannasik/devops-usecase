@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: order-services
-          image: nvlannasik/order-services-nodejs:latest
+          image: nvlannasik/order-services-nodejs:release-0.1.8
           ports:
             - name: order-svc
               containerPort: 3000
