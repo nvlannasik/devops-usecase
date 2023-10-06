@@ -1,4 +1,4 @@
-FROM --platform=arm64 node:19.9-alpine 
+FROM --platform=linux/arm64 node:19.9-alpine 
 WORKDIR /app
 COPY . .
 RUN npm cache clean --force
