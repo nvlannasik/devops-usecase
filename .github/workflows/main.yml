@@ -19,7 +19,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./App/order-services-nodejs
-          file: ./App/order-services-nodejs/Dockerfile
+          file: ./App/order-nodejs/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
           push: true
 
@@ -33,7 +33,7 @@ jobs:
         id: product-service
         uses: docker/build-push-action@v2
         with:
-          context: ./App/product-services-nodejs
+          context: ./App/product-nodejs
           file: ./App/product-services-nodejs/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}
           push: true
@@ -48,7 +48,7 @@ jobs:
         id: user-service
         uses: docker/build-push-action@v2
         with:
-          context: ./App/user-services-go
+          context: ./App/user-go
           file: ./App/user-services-go/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}
           push: true
