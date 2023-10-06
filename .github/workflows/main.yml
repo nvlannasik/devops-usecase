@@ -11,16 +11,20 @@ jobs:
     steps:
       # Checkout Code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       # Login to DockerHub
       - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       # Layanan Order
       - name: Build & Push Order Service
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: ./App/order-nodejs
           file: ./App/order-nodejs/Dockerfile
@@ -40,7 +44,7 @@ jobs:
 
       # Layanan Product
       - name: Build & Push Product Service
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: ./App/product-nodejs
           file: ./App/product-nodejs/Dockerfile
@@ -60,7 +64,7 @@ jobs:
 
       # Layanan User
       - name: Build & Push User Service
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: ./App/user-go
           file: ./App/user-go/Dockerfile
