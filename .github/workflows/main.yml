@@ -73,4 +73,4 @@ jobs:
       - name: Push manifest to repo
         run: |
           git commit -m "Update manifest"
-          git push
+          git push origin master
