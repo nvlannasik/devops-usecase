@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-services-svc
+  namespace: be-product
+spec:
+  selector:
+    app: product-services
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

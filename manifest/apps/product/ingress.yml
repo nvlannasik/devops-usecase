@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: be-product
+  name: product-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
+    ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.annasik.my.id
+      secretName: product-tls
+  rules:
+    - host: api.annasik.my.id
+      http:
+        paths:
+          - path: /v1/product
+            pathType: Prefix
+            backend:
+              service:
+                name: product-services-svc
+                port:
+                  number: 3000

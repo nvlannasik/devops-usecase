@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-services
+  namespace: be-product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-services
+  template:
+    metadata:
+      name: product-services
+      labels:
+        app: product-services
+    spec:
+      containers:
+        - name: product-services
+          image: nvlannasik/product-services-nodejs:latest
+          ports:
+            - name: product-svc
+              containerPort: 3000
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 200m
+            requests:
+              memory: 128Mi
+              cpu: 100m
+          envFrom:
+            - configMapRef:
+                name: product-configmap
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: product-services-secret
+                  key: SECRET_KEY
+            - name: DB_MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: product-services-secret
+                  key: DB_MONGO_USER
+            - name: DB_MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: product-services-secret
+                  key: DB_MONGO_PASSWORD
