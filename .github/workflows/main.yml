@@ -12,37 +12,6 @@ jobs:
       # Checkout Code
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Layanan Order
-      - name: Build Order Service
-        uses: docker/build-push-action@v2
-        with:
-          context: ./App/order-nodejs
-          file: ./App/order-nodejs/Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
-          push: false # Change to false to only build the image
-
-      # Layanan Product
-      - name: Build Product Service
-        uses: docker/build-push-action@v2
-        with:
-          context: ./App/product-nodejs
-          file: ./App/product-nodejs/Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}
-          push: false
-
-      # Layanan User
-      - name: Build User Service
-        uses: docker/build-push-action@v2
-        with:
-          context: ./App/user-go
-          file: ./App/user-go/Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}
-          push: false
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       # Login to DockerHub
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -50,26 +19,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Push Order Services
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
-
-      - name: Push Product Services
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}
-
-      - name: Push User Services
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}
-
-  update-manifest:
-    needs: push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Set up Git
         run: |
           git config --global user.email "bot-ci"
           git config --global user.name "bot-ci"
+
+      # Layanan Order
+      - name: Build & Push Order Service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./App/order-nodejs
+          file: ./App/order-nodejs/Dockerfile
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
+          push: true
 
       - name: Update Order Services Deployment manifest
         run: |
@@ -77,11 +39,29 @@ jobs:
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/order/deployment.yml
           git add ./manifest/apps/order/deployment.yml
 
+      # Layanan Product
+      - name: Build & Push Product Service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./App/product-nodejs
+          file: ./App/product-nodejs/Dockerfile
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}
+          push: true
+
       - name: Update Product Services Deployment manifest
         run: |
           NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/product-services-nodejs:${{ github.ref_name }}"
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/product/deployment.yml
           git add ./manifest/apps/product/deployment.yml
+
+      # Layanan User
+      - name: Build & Push User Service
+        uses: docker/build-push-action@v2
+        with:
+          context: ./App/user-go
+          file: ./App/user-go/Dockerfile
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}
+          push: true
 
       - name: Update User Services Deployment manifest
         run: |
@@ -89,7 +69,8 @@ jobs:
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/user/deployment.yml
           git add ./manifest/apps/user/deployment.yml
 
-      - name: commit & push
+      # Push manifest to repo
+      - name: Push manifest to repo
         run: |
-          git commit -m "Update manifest tags for release ${{ github.ref_name }}"
+          git commit -m "Update manifest"
           git push
