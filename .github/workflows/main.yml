@@ -18,7 +18,7 @@ jobs:
         id: order-service
         uses: docker/build-push-action@v2
         with:
-          context: ./App/order-services-nodejs
+          context: ./App/order-nodejs
           file: ./App/order-nodejs/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
           push: true
