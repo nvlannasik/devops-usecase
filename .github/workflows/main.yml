@@ -28,11 +28,16 @@ jobs:
           file: ./App/order-nodejs/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}
           push: true
+      - name: Print Before Update Order Service Deployment
+        run: cat ./manifest/apps/order/deployment.yml
 
       - name: Update Order Service Deployment Manifest Locally
         run: |
           NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/order-services-nodejs:${{ github.ref_name }}"
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./manifest/apps/order/deployment.yml
+
+      - name: Print After Update Order Service Deployment
+        run: cat ./manifest/apps/order/deployment.yml
 
       # Layanan Product
       - name: Build and Push Product Service
