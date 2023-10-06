@@ -12,6 +12,12 @@ jobs:
       # Checkout Code
       - name: Checkout code
         uses: actions/checkout@v2
+      # Login to DockerHub
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       # Layanan Order
       - name: Build and Push Order Service
@@ -57,13 +63,6 @@ jobs:
         run: |
           NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/user-services-go:${{ github.ref_name }}"
           sed -i "s|image: .*|image: $NEW_IMAGE|" ./Manifest/apps/user/deployment.yml
-
-      # Login to DockerHub
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       # # Trigger ArgoCD untuk setiap layanan
       # - name: Trigger ArgoCD Sync
