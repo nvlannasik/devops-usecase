@@ -31,11 +31,11 @@ spec:
             - configMapRef:
                 name: product-configmap
           env:
-            - name: SECRET_KEY
+            - name: TOKEN_SECRET
               valueFrom:
                 secretKeyRef:
                   name: product-services-secret
-                  key: SECRET_KEY
+                  key: TOKEN_SECRET
             - name: DB_MONGO_USER
               valueFrom:
                 secretKeyRef:
