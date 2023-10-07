@@ -1,6 +1,6 @@
 # DevOps Usecases
 
-This repository contains the DevOps usecases that goal is to provide a ci/cd pipeline for a three simple backend services (User, Order, Product) that are deployed on a kubernetes cluster. The kubernetes cluster is a self hosted cluster on a microcluster of Raspberry Pi 4 Model B. The cluster is managed by ArgoCD and the ci/cd pipeline is managed by Github Actions.
+This repository contains the DevOps usecases that goal is to provide a CI/CD pipeline for a three simple backend services (User, Order, Product) that are deployed on a kubernetes cluster. The kubernetes cluster is a self hosted cluster on a microcluster of Raspberry Pi 4 Model B. The cluster is connect to the internet using Cloudflare Argo Tunnel. The CI/CD Pipeline is managed by Github Actions and ArgoCD.
 
 ## Project Structure
 
@@ -49,7 +49,7 @@ The kubernetes cluster is a self hosted cluster on a microcluster of Raspberry P
 ![Kubernetes Cluster](/image/kubernetes-cluster-summary.png)
 ![Kubernetes Cluster](/image/kubernetes-object-overview.png)
 
-## Technical Documentation
+## Additional Technical Documentation
 
 - [Setup Kubernetes Cluster on Raspberry Pi 4 Model B](https://github.com/nvlannasik/microcluster-k3s-documentation)
 - [OpenApi Specification](https://openapi.annasik.my.id)
