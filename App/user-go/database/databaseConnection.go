@@ -22,7 +22,7 @@ func DBinstance() *mongo.Client {
 	MongoDBUser := os.Getenv("DB_MONGO_USER")
 	MongoDBPassword := os.Getenv("DB_MONGO_PASSWORD")
 
-	MongoDBuri := fmt.Sprintf("mongodb://%s:%s@%s:%s", MongoDBUser, MongoDBPassword, MongoDBHost, MongoDBPort)
+	MongoDBuri := fmt.Sprintf("mongodb://%s:%s@%s:%s/?directConnection=true&authMechanism=DEFAULT", MongoDBUser, MongoDBPassword, MongoDBHost, MongoDBPort)
 
 	mongo.NewClient(options.Client().ApplyURI(MongoDBuri))
 	client, err := mongo.NewClient(options.Client().ApplyURI(MongoDBuri))
