@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swagger-ui
+  namespace: openapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swagger-ui
+  template:
+    metadata:
+      labels:
+        app: swagger-ui
+    spec:
+      containers:
+        - name: swagger-ui
+          image: swaggerapi/swagger-ui
+          ports:
+            - containerPort: 8080
+          env:
+            - name: URL
+              value: /openapi.yaml
+          volumeMounts:
+            - name: openapi-volume
+              mountPath: /usr/share/nginx/html/openapi.yaml
+              subPath: openapi.yaml
+      volumes:
+        - name: openapi-volume
+          configMap:
+            name: openapi-config

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: openapi
+  name: swagger-ui-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
+    ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - openapi.annasik.my.id
+      secretName: swagger-ui-tls
+  rules:
+    - host: openapi.annasik.my.id
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: swagger-ui-svc
+                port:
+                  number: 80

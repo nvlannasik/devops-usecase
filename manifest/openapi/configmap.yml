@@ -1,0 +1,243 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openapi-config
+  namespace: openapi
+data:
+  openapi.yaml: |
+    openapi: "3.0.0"
+    info:
+      version: "1.0.0"
+      title: "API Produk"
+      description: "API yang ada ditampilkan disini, hanya API untuk testing saja. Jadi untuk Method POST, PUT, DELETE (khususnya pada service product dan order) tidak ditambahkan. Hanya GET yang ditambahkan."
+
+    servers:
+      - url: "https://api.annasik.my.id/v1"
+
+    tags:
+      - name: "Service User"
+        description: "Untuk Login"
+      - name: "Service Product"
+        description: "Untuk Hit Service Product"
+      - name: "Service Order"
+        description: "Untuk Hit Service Order"
+
+    paths:
+      /user/login:
+        post:
+          tags:
+            - "Service User"
+          summary: "Login Pengguna"
+          description: "Melakukan login untuk pengguna yang sudah terdaftar."
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                    Email:
+                      type: "string"
+                      format: "email"
+                      example: "devops@gmail.com"
+                    Password:
+                      type: "string"
+                      example: "devops123"
+          responses:
+            "200":
+              description: "Login berhasil."
+              content:
+                application/json:
+                  schema:
+                    type: "object"
+                    properties:
+                      status:
+                        type: "string"
+                        example: "success"
+                      message:
+                        type: "string"
+                        example: "User Berhasil Login"
+                      token:
+                        type: "string"
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      refreshToken:
+                        type: "string"
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            "400":
+              description: "Data login tidak valid."
+              content:
+                application/json:
+                  schema:
+                    type: "object"
+                    properties:
+                      error:
+                        type: "string"
+                        example: "Email atau password salah."
+
+      /product:
+        get:
+          tags:
+            - "Service Product"
+          summary: "Ambil Semua Produk"
+          description: "Mengambil semua produk yang tersedia."
+          parameters:
+            - name: "auth-token"
+              in: "header"
+              required: true
+              description: "Token otentikasi untuk mengakses API."
+              schema:
+                type: "string"
+          responses:
+            "200":
+              description: "Produk berhasil diambil."
+              content:
+                application/json:
+                  schema:
+                    type: "object"
+                    properties:
+                      message:
+                        type: "string"
+                        example: "Produk berhasil diambil."
+                      data:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            id:
+                              type: "integer"
+                              example: 1
+                            name:
+                              type: "string"
+                              example: "Buku Baru"
+                            price:
+                              type: "string"
+                              example: "100000"
+                            category:
+                              type: "string"
+                              example: "buku"
+                            description:
+                              type: "string"
+                              example: "ini buku bagus"
+                            image:
+                              type: "string"
+                              example: "https://upload.wikimedia.org/wikipedia/commons/4/49/Gambar_Buku.png"
+                            quantity:
+                              type: "integer"
+                              example: 10
+                            status:
+                              type: "string"
+                              example: "Ready"
+            "400":
+              description: "Permintaan tidak valid."
+              content:
+                application/json:
+                  schema:
+                    type: "object"
+                    properties:
+                      status:
+                        type: "string"
+                        example: "error"
+                      message:
+                        type: "string"
+                        example: "You are not authorized"
+
+      /order:
+        get:
+          tags:
+            - "Service Order"
+          summary: "Ambil Semua Produk"
+          description: "Mengambil semua produk yang tersedia."
+          parameters:
+            - name: "auth-token"
+              in: "header"
+              required: true
+              description: "Token otentikasi untuk mengakses API."
+              schema:
+                type: "string"
+          responses:
+            "200":
+              description: "Daftar pesanan berhasil diambil."
+              content:
+                application/json:
+                  schema:
+                    type: "object"
+                    properties:
+                      status:
+                        type: "string"
+                        example: "success"
+                      message:
+                        type: "string"
+                        example: "Orders has been retrieved successfully"
+                      data:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            _id:
+                              type: "string"
+                              example: "6521b40e4a1c522e8fa9abf4"
+                            orderNumber:
+                              type: "integer"
+                              example: 1
+                            orderTotal:
+                              type: "integer"
+                              example: 2
+                            orderItems:
+                              type: "array"
+                              items:
+                                type: "object"
+                                properties:
+                                  product_uid:
+                                    type: "string"
+                                    format: "uuid"
+                                    example: "b9fe54fe-bafe-447b-90a7-1391e67a9dfd"
+                                  quantity:
+                                    type: "integer"
+                                    example: 5
+                                  price:
+                                    type: "integer"
+                                    example: 100000
+                                  product:
+                                    type: "string"
+                                    example: "Buku Baru"
+                                  _id:
+                                    type: "string"
+                                    example: "6521b40e4a1c522e8fa9abf5"
+                            customer:
+                              type: "string"
+                              example: "broncos"
+                            emailCustomer:
+                              type: "string"
+                              format: "email"
+                              example: "devops@gmail.com"
+                            shippingAddress:
+                              type: "string"
+                              example: "jalan mana aja dah"
+                            orderStatus:
+                              type: "string"
+                              example: "success"
+                            payment:
+                              type: "string"
+                              example: "cash"
+                            order_uid:
+                              type: "string"
+                              format: "uuid"
+                              example: "288d26be-4d1f-429e-8937-3fbb69b2b03f"
+                            orderDate:
+                              type: "string"
+                              format: "date-time"
+                              example: "2023-10-07T19:39:58.344Z"
+
+            "400":
+              description: "Permintaan tidak valid."
+              content:
+                application/json:
+                  schema:
+                    type: "object"
+                    properties:
+                      status:
+                        type: "string"
+                        example: "error"
+                      message:
+                        type: "string"
+                        example: "You are not authorized"
