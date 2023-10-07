@@ -17,7 +17,7 @@ spec:
     - host: api.annasik.my.id
       http:
         paths:
-          - path: /
+          - path: /v1/user/
             pathType: Prefix
             backend:
               service:
