@@ -13,6 +13,7 @@ This repository contains the DevOps usecases that goal is to provide a CI/CD pip
 - [ ] `manifest/`: contains the kubernetes manifest for the backend services.
   - [ ] `apps/`: contains the kubernetes manifest for the backend services.
   - [ ] `database/`: contains the kubernetes manifest for the mongodb database.
+  - [ ] `openapi/`: contains the kubernetes manifest for the openapi deployment.
 
 ## Tech Stack
 
