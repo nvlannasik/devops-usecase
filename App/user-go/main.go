@@ -2,20 +2,21 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	routes "github.com/nvlannasik/user-services-go/routes"
 	"log"
 	"os"
 )
 
 func main() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
 	port := os.Getenv("PORT")
 	if port == "" {
+		log.Println("No PORT environment variable detected, defaulting to 8080")
 		port = "8080"
 	}
 	router := gin.New()

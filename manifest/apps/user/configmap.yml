@@ -4,11 +4,15 @@ metadata:
   name: script-add-env-from-secret
   namespace: be-user
 data:
-  add-env-from-secret.sh: |-
-    #!/bin/sh
-    echo "DB_MONGO_USER=$(echo -n $DB_MONGO_USER | base64 -d)" >> /app/.env
-    echo "DB_MONGO_PASS=$(echo -n $DB_MONGO_PASS | base64 -d)" >> /app/.env
-    echo "SECRET_KEY=$(echo -n $SECRET_KEY | base64 -d)" >> /app/.env
-    echo "DB_MONGO_HOST=mongodb-user-service-svc.database.svc.cluster.local" >> /app/.env
-    echo "DB_MONGO_PORT=27017" >> /app/.env
-    echo "PORT=8080" >> /app/.env
+  # add-env-from-secret.sh: |-
+  #   #!/bin/sh
+  #   echo "DB_MONGO_USER=$(echo -n $DB_MONGO_USER | base64 -d)" >> /app/.env
+  #   echo "DB_MONGO_PASS=$(echo -n $DB_MONGO_PASS | base64 -d)" >> /app/.env
+  #   echo "SECRET_KEY=$(echo -n $SECRET_KEY | base64 -d)" >> /app/.env
+  #   echo "DB_MONGO_HOST=mongodb-user-service-svc.database.svc.cluster.local" >> /app/.env
+  #   echo "DB_MONGO_PORT=27017" >> /app/.env
+  #   echo "PORT=8080" >> /app/.env
+
+  PORT: "8080"
+  DB_MONGO_HOST: mongodb-user-service-svc.database.svc.cluster.local
+  DB_MONGO_PORT: "27017"
