@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	// "github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -11,6 +12,15 @@ import (
 	"time"
 )
 
+func decodeBase64(s string) string {
+	decoded, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		fmt.Println("decode error:", err)
+		return ""
+	}
+	return string(decoded)
+}
+
 func DBinstance() *mongo.Client {
 	// err := godotenv.Load(".env")
 	// if err != nil {
@@ -19,10 +29,10 @@ func DBinstance() *mongo.Client {
 
 	MongoDBHost := os.Getenv("DB_MONGO_HOST")
 	MongoDBPort := os.Getenv("DB_MONGO_PORT")
-	MongoDBUser := os.Getenv("DB_MONGO_USER")
-	MongoDBPassword := os.Getenv("DB_MONGO_PASSWORD")
+	MongoDBUser := decodeBase64(os.Getenv("DB_MONGO_USER"))
+	MongoDBPassword := decodeBase64(os.Getenv("DB_MONGO_PASSWORD"))
 
-	MongoDBuri := fmt.Sprintf("mongodb://%s:%s@%s:%s/?directConnection=true&authMechanism=DEFAULT", MongoDBUser, MongoDBPassword, MongoDBHost, MongoDBPort)
+	MongoDBuri := fmt.Sprintf("mongodb://%s:%s@%s:%s/?authSource=admin&authMechanism=SCRAM-SHA-256", MongoDBUser, MongoDBPassword, MongoDBHost, MongoDBPort)
 
 	mongo.NewClient(options.Client().ApplyURI(MongoDBuri))
 	client, err := mongo.NewClient(options.Client().ApplyURI(MongoDBuri))
