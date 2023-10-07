@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: script-add-env-from-secret
+  name: user-configmap
   namespace: be-user
 data:
   # add-env-from-secret.sh: |-
