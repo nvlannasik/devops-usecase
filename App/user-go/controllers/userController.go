@@ -143,7 +143,7 @@ func Login() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "message": "Email or password is incorrect"})
 			return
 		}
-		c.JSON(http.StatusOK, foundUser)
+		c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User Berhasil Login", "name": *foundUser.FirstName + " " + *foundUser.LastName, "token": *foundUser.Token, "refreshToken": *foundUser.RefreshToken})
 	}
 }
 

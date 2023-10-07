@@ -24,7 +24,7 @@ func main() {
 	routes.AuthRouter(router)
 	routes.UserRouter(router)
 
-	router.GET("/api-1", func(c *gin.Context) {
+	router.GET("/v1/user/healthz", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok"})
 
 	})
