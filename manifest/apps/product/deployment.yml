@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: product-services
-          image: nvlannasik/product-services-nodejs:release-0.2.7
+          image: nvlannasik/product-services-nodejs:release-0.2.8
           ports:
             - name: product-svc
               containerPort: 3000
