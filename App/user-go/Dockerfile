@@ -5,11 +5,8 @@ WORKDIR /app
 COPY . .
 
 RUN go mod download
-
-COPY *.go ./
-
-RUN go build -o /go-docker-demo
+RUN go build -o /user-services
 
 EXPOSE 8080
 
-CMD [ "/go-docker-demo" ]
+CMD ["/user-services"]
