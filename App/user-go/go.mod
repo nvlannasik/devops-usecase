@@ -9,6 +9,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	go.mongodb.org/mongo-driver v1.12.1
 	golang.org/x/crypto v0.14.0
+	golang.org/x/crypto v0.14.0
 )
 
 require (
