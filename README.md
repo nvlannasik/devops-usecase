@@ -36,7 +36,15 @@ This repository contains the DevOps usecases that goal is to provide a CI/CD pip
 
 ## The CI/CD Pipeline
 
-CI/CD Pipeline is managed by Github Actions. The pipeline is triggered when there is a release tag pushed to the repository. The pipeline will build the docker image for each backend services and push it to the docker registry. After that, the pipeline will change the image tag in the kubernetes manifest and push it to the repository. And finally, the pipeline will sync the kubernetes manifest to the kubernetes cluster using ArgoCD.
+CI/CD Pipeline is managed by Github Actions. The pipeline is triggered when there is a release tag pushed to the repository. The pipeline includes the following steps:
+
+- Static Code Analysis
+- Unit Testing
+- Integration Testing
+- e2e Testing
+- Build & Push Docker Image to Docker Registry
+- Change Image Tag on Kubernetes Manifest
+- Sync Kubernetes Manifest to Kubernetes Cluster using ArgoCD
 
 ![Github Action](/image/github-action.png)
 
@@ -54,6 +62,10 @@ The kubernetes cluster is a self hosted cluster on a microcluster of Raspberry P
 
 - [Setup Kubernetes Cluster on Raspberry Pi 4 Model B](https://github.com/nvlannasik/microcluster-k3s-documentation)
 - [OpenApi Specification](https://openapi.annasik.my.id)
+- [Setup ArgoCD on Kubernetes Cluster (Comming Soon)](#additional-technical-documentation)
+- [Setup Github Actions for CI/CD Pipeline (Comming Soon)](#additional-technical-documentation)
+- [Setup Cloudflare Argo Tunnel for Exposing Ingress on Kubernetes Cluster (Comming Soon)](#additional-technical-documentation)
+- [Setup Prometheus and Grafana on Kubernetes (Comming Soon)](#additional-technical-documentation)
 
 ## Author
 
