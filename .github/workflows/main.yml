@@ -6,23 +6,106 @@ on:
       - "release-*"
 
 jobs:
+  code-static-analysis-inspection-example-for-order-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "19.9"
+
+      - name: Install Dependencies
+        run: |
+          cd ./App/order-nodejs
+          npm install
+
+      - name: Run Static Analysis for NodeJS Apps
+        run: |
+          cd ./App/order-nodejs
+          npm run lint
+
+  unit-testing-example-for-order-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "19.9"
+
+      - name: Install Dependencies
+        run: |
+          cd ./App/order-nodejs
+          npm install
+
+      - name: Run Unit Testing
+        run: |
+          cd ./App/order-nodejs
+          npm run test
+
+  integration-test-example-for-order-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "19.9"
+
+      - name: Install Dependencies
+        run: |
+          cd ./App/order-nodejs
+          npm install
+
+      - name: Run Integration Testing
+        run: |
+          cd ./App/order-nodejs
+          npm run integration
+
+  end-to-end-test-example-for-order-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "19.9"
+
+      - name: Install Dependencies
+        run: |
+          cd ./App/order-nodejs
+          npm install
+
+      - name: Run End to End Testing
+        run: |
+          cd ./App/order-nodejs
+          npm run e2e
+
   build-push-and-update-manifest:
     runs-on: ubuntu-latest
     steps:
-      # Checkout Code
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      # Login to DockerHub
+
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      # Layanan Order
+
       - name: Build & Push Order Service
         uses: docker/build-push-action@v5
         with:
@@ -43,7 +126,6 @@ jobs:
           git commit -m "Update Order Services Deployment manifest"
           git push origin HEAD:master
 
-      # Layanan Product
       - name: Build & Push Product Service
         uses: docker/build-push-action@v5
         with:
@@ -64,7 +146,6 @@ jobs:
           git commit -m "Update Product Services Deployment manifest"
           git push origin HEAD:master
 
-      # Layanan User
       - name: Build & Push User Service
         uses: docker/build-push-action@v5
         with:
