@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: order-configmap
-  namespace: be-order
+  namespace: default
 data:
   PORT: "3000"
   DB_MONGO_HOST: mongodb-order-service-svc.database.svc.cluster.local

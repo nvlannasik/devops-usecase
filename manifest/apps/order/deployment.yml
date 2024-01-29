@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-services
-  namespace: be-order
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -30,19 +30,21 @@ spec:
           envFrom:
             - configMapRef:
                 name: order-configmap
-          env:
-            - name: TOKEN_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: order-services-secret
-                  key: TOKEN_SECRET
-            - name: DB_MONGO_USER
-              valueFrom:
-                secretKeyRef:
-                  name: order-services-secret
-                  key: DB_MONGO_USER
-            - name: DB_MONGO_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: order-services-secret
-                  key: DB_MONGO_PASSWORD
+            - secretRef:
+                name: order-services-secret
+          # env:
+          #   - name: TOKEN_SECRET
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: order-services-secret
+          #         key: TOKEN_SECRET
+          #   - name: DB_MONGO_USER
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: order-services-secret
+          #         key: DB_MONGO_USER
+          #   - name: DB_MONGO_PASSWORD
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: order-services-secret
+          #         key: DB_MONGO_PASSWORD

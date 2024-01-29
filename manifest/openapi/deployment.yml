@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: swagger-ui
-          image: swaggerapi/swagger-ui
+          image: swaggerapi/swagger-ui:v5.9.0
           ports:
             - containerPort: 8080
           env:

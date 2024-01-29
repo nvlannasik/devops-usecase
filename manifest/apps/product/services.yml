@@ -4,9 +4,9 @@ metadata:
   name: product-services-svc
   namespace: be-product
 spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  clusterIP: None
   selector:
     app: product-services
-  ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000

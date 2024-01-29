@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: be-order
-  name: order-ingress
+  name: default
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
     ingress.kubernetes.io/rewrite-target: /
